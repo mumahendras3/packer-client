@@ -140,19 +140,43 @@ export const useGlobalStore = defineStore('global', {
       }
     },
     async checkUpdateAllRepos() {
-      const axiosOptions = {
-        method: 'PATCH',
-        url: `${serverUrl}/repos`,
-        headers: {
-          access_token: localStorage.access_token || sessionStorage.access_token
+      try {
+        const axiosOptions = {
+          method: 'PATCH',
+          url: `${serverUrl}/repos`,
+          headers: {
+            access_token: localStorage.access_token || sessionStorage.access_token
+          }
+        };
+        if (this.hasGithubAccessToken) {
+          axiosOptions.headers.authorization = this.getGithubAccessToken();
         }
-      };
-      if (this.hasGithubAccessToken) {
-        axiosOptions.headers.authorization = this.getGithubAccessToken();
+        const { data } = await axios(axiosOptions);
+        if (data.message === 'All repos successfully checked for update')
+          await this.fetchRepos();
+      } catch (err) {
+        if (err.response)
+          return showError(err.response.data);
+        showError(err);
       }
-      const { data } = await axios(axiosOptions);
-      if (data.message === 'All repos successfully checked for update')
+    },
+    async deleteRepo(repoId) {
+      try {
+        const axiosOptions = {
+          method: 'DELETE',
+          url: `${serverUrl}/repos/${repoId}`,
+          headers: {
+            access_token: localStorage.access_token || sessionStorage.access_token
+          }
+        };
+        const { data } = await axios(axiosOptions);
+        showSuccess(data);
         await this.fetchRepos();
+      } catch (err) {
+        if (err.response)
+          return showError(err.response.data);
+        showError(err);
+      }
     },
     async addTask(formData, files) {
       try {
