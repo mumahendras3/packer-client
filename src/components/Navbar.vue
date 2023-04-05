@@ -31,22 +31,12 @@ export default {
             </RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink to="/bookmarks" class="nav-link" :class="{ active: $route.path === '/bookmarks' }">
+            <RouterLink to="/tasks" class="nav-link" :class="{ active: $route.path === '/bookmarks' }">
               Tasks
             </RouterLink>
           </li>
         </ul>
         <div class="d-md-flex col-md-3 justify-content-md-end mt-2 mt-md-0">
-          <RouterLink to="/login" v-if="$route.path !== '/login' && !isLoggedIn">
-            <button class="btn btn-primary text-nowrap me-2 me-md-0">
-              Log In
-            </button>
-          </RouterLink>
-          <RouterLink to="/register" v-if="$route.path !== '/register' && !isLoggedIn">
-            <button class="btn btn-secondary text-nowrap me-2 me-md-0 ms-md-2">
-              Register
-            </button>
-          </RouterLink>
           <RouterLink to="/add-repo" v-if="$route.name === 'home' && repos.length">
             <button type="button" class="btn btn-success text-nowrap me-2 me-md-0 ms-md-2">
               Add a new repo

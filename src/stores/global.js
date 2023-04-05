@@ -9,6 +9,7 @@ export const useGlobalStore = defineStore('global', {
     isLoggedIn: Boolean(localStorage.access_token || sessionStorage.access_token),
     hasGithubAccessToken: Boolean(localStorage.authorization || sessionStorage.authorization),
     repos: [],
+    tasks: []
   }),
   actions: {
     async register(formData) {
@@ -90,6 +91,23 @@ export const useGlobalStore = defineStore('global', {
         showError(err);
       }
     },
+    async fetchTasks() {
+      try {
+        let axiosOptions = {
+          method: 'GET',
+          url: `${serverUrl}/tasks`,
+          headers: {
+            access_token: localStorage.access_token || sessionStorage.access_token
+          }
+        };
+        const { data } = await axios(axiosOptions);
+        this.tasks = data;
+      } catch (err) {
+        if (err.response)
+          return showError(err.response.data);
+        showError(err);
+      }
+    },
     getGithubAccessToken() {
       if (localStorage.authorization) {
         return localStorage.authorization
@@ -135,6 +153,39 @@ export const useGlobalStore = defineStore('global', {
       const { data } = await axios(axiosOptions);
       if (data.message === 'All repos successfully checked for update')
         await this.fetchRepos();
+    },
+    async addTask(formData, files) {
+      try {
+        // Send the database data first
+        const axiosOptions = {
+          method: 'POST',
+          url: `${serverUrl}/tasks`,
+          data: formData,
+          headers: {
+            access_token: localStorage.access_token || sessionStorage.access_token
+          }
+        };
+        const { data } = await axios(axiosOptions);
+        // Sending the files to the server first
+        const response = await axios({
+          method: 'POST',
+          url: `${serverUrl}/files`,
+          data: files,
+          headers: {
+            access_token: localStorage.access_token || sessionStorage.access_token,
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        if (response.status !== 201)
+          throw { response };
+        // Everything should be fine if we arrive here
+        showSuccess(data);
+        this.router.push('/tasks');
+      } catch (err) {
+        if (err.response)
+          return showError(err.response.data);
+        showError(err);
+      }
     },
     async googleOauthCallback(response) {
       try {
