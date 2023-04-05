@@ -21,10 +21,7 @@ export default {
     ...mapActions(useGlobalStore, ['fetchRepos'])
   },
   async created() {
-    // Get the total number of posts available in the database
     await this.fetchRepos();
-    // // Then, get the latest 6 posts (for the first page)
-    // await this.fetchRepos('page=1', `postCount=${this.postCount}`);
   }
 }
 </script>

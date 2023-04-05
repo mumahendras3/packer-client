@@ -8,6 +8,7 @@ export default {
     ...mapState(useGlobalStore, ['isLoggedIn'])
   },
   methods: {
+    ...mapActions(useGlobalStore, ['deleteRepo']),
     generateRandomColor() {
       return randomColor();
     }
@@ -31,7 +32,7 @@ export default {
         <p v-else class="card-text mb-3 text-success">
           Local version is up to date
         </p>
-        <button type="button" class="btn btn-outline-primary me-2">Update</button>
+        <button @click="deleteRepo(repo._id)" type="button" class="btn btn-danger me-2">Delete</button>
       </div>
     </div>
   </div>

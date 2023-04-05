@@ -18,7 +18,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(useGlobalStore, ['startTask', 'checkTask', 'getTaskLogs']),
+    ...mapActions(useGlobalStore, ['startTask', 'checkTask', 'getTaskLogs', 'deleteTask']),
     editTask() {
       // Not handled yet
     },
@@ -60,7 +60,7 @@ export default {
     <div class="mb-3">
       <label for="additional-files" class="form-label">Additional Files</label>
       <input class="form-control" type="text" readonly id="additional-files"
-        :value="additionalFiles.map(file => file.name).join(', ')">
+        :value="additionalFiles.length ? additionalFiles.map(file => file.name).join(', ') : '<none>'">
     </div>
     <div class="mb-3">
       <label for="name" class="form-label">Run Command</label>
@@ -70,7 +70,6 @@ export default {
       <label for="owner-name" class="form-label">Container Image</label>
       <input type="text" readonly class="form-control" id="owner-name" :value="containerImage">
     </div>
-    <button v-if="status !== 'Running'" @click="editTask" type="button" class="btn btn-secondary me-2">Edit</button>
     <button v-if="status === 'Created'" @click="handleStartTask(id)" type="button" class="btn btn-primary me-2">
       Start
     </button>
@@ -83,5 +82,6 @@ export default {
     <button v-else-if="status === 'Succeeded'" @click="handleGetTaskLogs(id)" type="button" class="btn btn-success me-2">
       {{ status }}
     </button>
+    <button v-if="status !== 'Running'" @click="deleteTask(id)" type="button" class="btn btn-danger">Delete</button>
   </form>
 </template>

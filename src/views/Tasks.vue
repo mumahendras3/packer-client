@@ -12,16 +12,17 @@ export default {
     }
   },
   computed: {
-    ...mapState(useGlobalStore, ['tasks'])
+    ...mapState(useGlobalStore, ['tasks', 'repos'])
   },
   methods: {
-    ...mapActions(useGlobalStore, ['fetchTasks']),
+    ...mapActions(useGlobalStore, ['fetchTasks', 'fetchRepos']),
     showLogs(logs) {
       this.logs = logs;
       taskLogsModal.show();
     }
   },
   async created() {
+    await this.fetchRepos();
     await this.fetchTasks();
   },
   components: { TaskFormReadOnly, Modal },
@@ -52,9 +53,10 @@ export default {
     </div>
     <div class="row justify-content-center">
       <div class="col-auto">
-        <RouterLink to="/add-task">
+        <RouterLink v-if="repos.length" to="/add-task">
           <button type="button" class="btn btn-success">Add a new task</button>
         </RouterLink>
+        <button v-else type="button" class="btn btn-success" disabled>Add a new task</button>
       </div>
     </div>
   </template>
