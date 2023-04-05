@@ -32,7 +32,6 @@ export default {
           Local version is up to date
         </p>
         <button type="button" class="btn btn-outline-primary me-2">Update</button>
-        <button type="button" class="btn btn-outline-primary">Run a Task</button>
       </div>
     </div>
   </div>
