@@ -74,10 +74,10 @@ export default {
     <button v-if="status === 'Created'" @click="handleStartTask(id)" type="button" class="btn btn-primary me-2">
       Start
     </button>
-    <button v-else-if="status === 'Running'" type="button" class="btn btn-warning me-2">
+    <button v-else-if="status === 'Running'" @click="handleGetTaskLogs(id)" type="button" class="btn btn-warning me-2">
       {{ status }}
     </button>
-    <button v-else-if="status === 'Failed'" type="button" class="btn btn-danger me-2">
+    <button v-else-if="status === 'Failed'" @click="handleGetTaskLogs(id)" type="button" class="btn btn-danger me-2">
       {{ status }}
     </button>
     <button v-else-if="status === 'Succeeded'" @click="handleGetTaskLogs(id)" type="button" class="btn btn-success me-2">
