@@ -7,8 +7,8 @@ export const useGlobalStore = defineStore('global', {
   state: () => ({
     newlyRegisteredUser: undefined,
     isLoggedIn: Boolean(localStorage.access_token || sessionStorage.access_token),
-    posts: [],
-    totalPosts: 0
+    hasGithubAccessToken: Boolean(localStorage.authorization || sessionStorage.authorization),
+    repos: [],
   }),
   actions: {
     async register(formData) {
@@ -73,105 +73,68 @@ export const useGlobalStore = defineStore('global', {
     resetNewlyRegisteredUser() {
       this.newlyRegisteredUser = undefined;
     },
-    async fetchPosts(...query) {
+    async fetchRepos() {
       try {
         let axiosOptions = {
           method: 'GET',
-          url: `${serverUrl}/public/posts`
+          url: `${serverUrl}/repos`,
+          headers: {
+            access_token: localStorage.access_token || sessionStorage.access_token
+          }
         };
-        if (query.length) {
-          axiosOptions.url += `?${query.join('&')}`;
+        const { data } = await axios(axiosOptions);
+        this.repos = data;
+      } catch (err) {
+        if (err.response)
+          return showError(err.response.data);
+        showError(err);
+      }
+    },
+    getGithubAccessToken() {
+      if (localStorage.authorization) {
+        return localStorage.authorization
+      }
+      if (sessionStorage.authorization) {
+        return sessionStorage.authorization
+      }
+    },
+    async addRepo(formData) {
+      try {
+        const axiosOptions = {
+          method: 'POST',
+          url: `${serverUrl}/repos`,
+          data: formData,
+          headers: {
+            access_token: localStorage.access_token || sessionStorage.access_token
+          }
+        };
+        if (this.hasGithubAccessToken) {
+          axiosOptions.headers.authorization = this.getGithubAccessToken();
         }
         const { data } = await axios(axiosOptions);
-        this.posts = data;
-        if (query.length < 1)
-          this.totalPosts = data.length;
-      } catch (err) {
-        if (err.response)
-          return showError(err.response.data);
-        showError(err);
-      }
-    },
-    async fetchPostById(id) {
-      try {
-        const { data } = await axios({
-          method: 'GET',
-          url: `${serverUrl}/public/posts/${id}`
-        });
-        return data;
-      } catch (err) {
-        if (err.response)
-          return showError(err.response.data);
-        showError(err);
-      }
-    },
-    async fetchBookmarks() {
-      try {
-        const { data } = await axios({
-          method: 'GET',
-          url: `${serverUrl}/public/bookmarks`,
-          headers: {
-            access_token: localStorage.access_token || sessionStorage.access_token
-          }
-        });
-        return data;
-      } catch (err) {
-        if (err.response)
-          return showError(err.response.data);
-        showError(err);
-      }
-    },
-    async bookmarkPost(postId) {
-      try {
-        const { data } = await axios({
-          method: 'POST',
-          url: `${serverUrl}/public/bookmarks/${postId}`,
-          headers: {
-            access_token: localStorage.access_token || sessionStorage.access_token
-          }
-        });
-        if (!data.newlyBookmarked)
-          return showWarning({ message: 'Post already bookmarked' });
         showSuccess(data);
+        await this.fetchRepos();
+        this.router.push('/');
       } catch (err) {
         if (err.response)
           return showError(err.response.data);
         showError(err);
       }
     },
-    async unbookmarkPost(postId) {
-      try {
-        const { data } = await axios({
-          method: 'DELETE',
-          url: `${serverUrl}/public/bookmarks/${postId}`,
-          headers: {
-            access_token: localStorage.access_token || sessionStorage.access_token
-          }
-        });
-        showSuccess(data);
-        return true;
-      } catch (err) {
-        if (err.response)
-          return showError(err.response.data);
-        showError(err);
+    async checkUpdateAllRepos() {
+      const axiosOptions = {
+        method: 'PATCH',
+        url: `${serverUrl}/repos`,
+        headers: {
+          access_token: localStorage.access_token || sessionStorage.access_token
+        }
+      };
+      if (this.hasGithubAccessToken) {
+        axiosOptions.headers.authorization = this.getGithubAccessToken();
       }
-    },
-    async getPostDetailQrCode(postDetailPath) {
-      try {
-        const postDetailUrl = import.meta.env.VITE_CLIENT_URL + postDetailPath;
-        const { data } = await axios({
-          method: 'POST',
-          url: `${serverUrl}/public/qr-code`,
-          data: {
-            postDetailUrl
-          }
-        });
-        return data;
-      } catch (err) {
-        if (err.response)
-          return showError(err.response.data);
-        showError(err);
-      }
+      const { data } = await axios(axiosOptions);
+      if (data.message === 'All repos successfully checked for update')
+        await this.fetchRepos();
     },
     async googleOauthCallback(response) {
       try {

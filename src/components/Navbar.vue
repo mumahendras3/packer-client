@@ -4,10 +4,10 @@ import { useGlobalStore } from '../stores/global';
 
 export default {
   methods: {
-    ...mapActions(useGlobalStore, ['logout', 'bookmarkPost'])
+    ...mapActions(useGlobalStore, ['logout'])
   },
   computed: {
-    ...mapState(useGlobalStore, ['isLoggedIn'])
+    ...mapState(useGlobalStore, ['isLoggedIn', 'repos'])
   }
 }
 </script>
@@ -47,10 +47,11 @@ export default {
               Register
             </button>
           </RouterLink>
-          <button v-if="$route.name === 'post-detail' && isLoggedIn" @click="bookmarkPost($route.params.id)" type="button"
-            class="btn btn-success text-nowrap me-2 me-md-0 ms-md-2">
-            Bookmark
-          </button>
+          <RouterLink to="/add-repo" v-if="$route.name === 'home' && repos.length">
+            <button type="button" class="btn btn-success text-nowrap me-2 me-md-0 ms-md-2">
+              Add a new repo
+            </button>
+          </RouterLink>
           <button v-if="isLoggedIn" @click="logout" class="btn btn-primary text-nowrap ms-md-2">
             Log Out
           </button>

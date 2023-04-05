@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
+import AddRepo from '../views/AddRepo.vue';
 import { useGlobalStore } from '../stores/global';
 
 const router = createRouter({
@@ -21,6 +22,11 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: Register
+    },
+    {
+      path: '/add-repo',
+      name: 'add-repo',
+      component: AddRepo
     }
   ]
 });
