@@ -1,18 +1,19 @@
 <script>
 import { mapActions, mapState } from 'pinia';
 import { useGlobalStore } from '../stores/global';
-import Card from '../components/Card.vue';
+import TaskFormReadOnly from '../components/TaskFormReadOnly.vue';
 
 export default {
   computed: {
-    ...mapState(useGlobalStore, ['tasks'])
+    ...mapState(useGlobalStore, ["tasks"])
   },
   methods: {
-    ...mapActions(useGlobalStore, ['fetchTasks'])
+    ...mapActions(useGlobalStore, ["fetchTasks"])
   },
   async created() {
     await this.fetchTasks();
-  }
+  },
+  components: { TaskFormReadOnly }
 }
 </script>
 
@@ -24,7 +25,9 @@ export default {
   </div>
   <template v-if="tasks.length">
     <div class="row justify-content-center justify-content-sm-start row-gap-5">
-      <Card v-for="task in tasks" :key="task._id" :repo="task" />
+      <div v-for="task in tasks" :key="task._id" class="col-auto">
+        <TaskFormReadOnly :task="task" />
+      </div>
     </div>
   </template>
   <template v-else>

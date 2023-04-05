@@ -34,7 +34,6 @@ function showSuccess(successResponseObject) {
   const {
     message,
     email,
-    username,
     loggingIn,
     loggingOut,
     title,

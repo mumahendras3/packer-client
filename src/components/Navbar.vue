@@ -31,7 +31,7 @@ export default {
             </RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink to="/tasks" class="nav-link" :class="{ active: $route.path === '/bookmarks' }">
+            <RouterLink to="/tasks" class="nav-link" :class="{ active: $route.path === '/tasks' }">
               Tasks
             </RouterLink>
           </li>

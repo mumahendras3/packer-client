@@ -156,16 +156,6 @@ export const useGlobalStore = defineStore('global', {
     },
     async addTask(formData, files) {
       try {
-        // Send the database data first
-        const axiosOptions = {
-          method: 'POST',
-          url: `${serverUrl}/tasks`,
-          data: formData,
-          headers: {
-            access_token: localStorage.access_token || sessionStorage.access_token
-          }
-        };
-        const { data } = await axios(axiosOptions);
         // Sending the files to the server first
         const response = await axios({
           method: 'POST',
@@ -178,9 +168,59 @@ export const useGlobalStore = defineStore('global', {
         });
         if (response.status !== 201)
           throw { response };
+        // We need the ids of these uploaded files
+        const additionalFiles = response.data.files.map(file => file.id);
+        formData.additionalFiles = additionalFiles;
+        // Send database data now
+        const axiosOptions = {
+          method: 'POST',
+          url: `${serverUrl}/tasks`,
+          data: formData,
+          headers: {
+            access_token: localStorage.access_token || sessionStorage.access_token
+          }
+        };
+        const { data } = await axios(axiosOptions);
         // Everything should be fine if we arrive here
         showSuccess(data);
         this.router.push('/tasks');
+      } catch (err) {
+        if (err.response)
+          return showError(err.response.data);
+        showError(err);
+      }
+    },
+    async startTask(taskId) {
+      try {
+        const axiosOptions = {
+          method: 'POST',
+          url: `${serverUrl}/tasks/${taskId}`,
+          headers: {
+            access_token: localStorage.access_token || sessionStorage.access_token
+          }
+        };
+        const response = await axios(axiosOptions);
+        if (response.status !== 204) {
+          throw { response };
+        }
+        showSuccess({ message: 'Task started successfully' });
+      } catch (err) {
+        if (err.response)
+          return showError(err.response.data);
+        showError(err);
+      }
+    },
+    async checkTask(taskId) {
+      try {
+        const axiosOptions = {
+          method: 'GET',
+          url: `${serverUrl}/tasks/${taskId}/status`,
+          headers: {
+            access_token: localStorage.access_token || sessionStorage.access_token
+          }
+        };
+        const { data } = await axios(axiosOptions);
+        return data;
       } catch (err) {
         if (err.response)
           return showError(err.response.data);
