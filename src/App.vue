@@ -9,6 +9,10 @@ export default {
 </script>
 
 <template>
-  <Navbar v-if="$route.name !== 'login' && $route.name !== 'register'" />
-  <RouterView />
+  <header class="mb-4 sticky-top">
+    <Navbar />
+  </header>
+  <main class="container my-5">
+    <RouterView />
+  </main>
 </template>
