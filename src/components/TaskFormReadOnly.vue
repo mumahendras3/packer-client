@@ -21,6 +21,11 @@ export default {
     editTask() {
       // Not handled yet
     },
+    async handleStartTask(id) {
+      const success = await this.startTask(id);
+      if (success)
+        this.status = 'Running';
+    },
     pollStatus() {
       intervalID = setInterval(async () => {
         const data = await this.checkTask(this.id);
@@ -61,7 +66,7 @@ export default {
       <input type="text" readonly class="form-control" id="owner-name" :value="containerImage">
     </div>
     <button v-if="status !== 'Running'" @click="editTask" type="button" class="btn btn-secondary me-2">Edit</button>
-    <button v-if="status === 'Created'" @click="startTask(id)" type="button" class="btn btn-primary me-2">
+    <button v-if="status === 'Created'" @click="handleStartTask(id)" type="button" class="btn btn-primary me-2">
       Start
     </button>
     <button v-else-if="status === 'Running'" type="button" class="btn btn-warning me-2">

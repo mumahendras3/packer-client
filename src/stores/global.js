@@ -204,6 +204,7 @@ export const useGlobalStore = defineStore('global', {
           throw { response };
         }
         showSuccess({ message: 'Task started successfully' });
+        return true;
       } catch (err) {
         if (err.response)
           return showError(err.response.data);
