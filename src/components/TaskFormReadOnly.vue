@@ -5,6 +5,7 @@ let intervalID;
 
 export default {
   props: ['task'],
+  emits: ['show-logs'],
   data() {
     return {
       id: this.task._id,
@@ -17,7 +18,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(useGlobalStore, ['startTask', 'checkTask']),
+    ...mapActions(useGlobalStore, ['startTask', 'checkTask', 'getTaskLogs']),
     editTask() {
       // Not handled yet
     },
@@ -25,6 +26,10 @@ export default {
       const success = await this.startTask(id);
       if (success)
         this.status = 'Running';
+    },
+    async handleGetTaskLogs(id) {
+      const logs = await this.getTaskLogs(id);
+      this.$emit('show-logs', logs);
     },
     pollStatus() {
       intervalID = setInterval(async () => {
@@ -75,7 +80,7 @@ export default {
     <button v-else-if="status === 'Failed'" type="button" class="btn btn-danger me-2">
       {{ status }}
     </button>
-    <button v-else-if="status === 'Succeeded'" type="button" class="btn btn-success me-2">
+    <button v-else-if="status === 'Succeeded'" @click="handleGetTaskLogs(id)" type="button" class="btn btn-success me-2">
       {{ status }}
     </button>
   </form>

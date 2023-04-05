@@ -228,6 +228,24 @@ export const useGlobalStore = defineStore('global', {
         showError(err);
       }
     },
+    async getTaskLogs(taskId) {
+      try {
+        const axiosOptions = {
+          method: 'GET',
+          url: `${serverUrl}/tasks/${taskId}/logs`,
+          headers: {
+            access_token: localStorage.access_token || sessionStorage.access_token
+          }
+        };
+        const { data } = await axios(axiosOptions);
+        console.log(data);
+        return data;
+      } catch (err) {
+        if (err.response)
+          return showError(err.response.data);
+        showError(err);
+      }
+    },
     async googleOauthCallback(response) {
       try {
         const { data: { access_token } } = await axios({

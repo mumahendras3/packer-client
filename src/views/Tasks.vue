@@ -2,18 +2,32 @@
 import { mapActions, mapState } from 'pinia';
 import { useGlobalStore } from '../stores/global';
 import TaskFormReadOnly from '../components/TaskFormReadOnly.vue';
+import Modal from '../components/Modal.vue';
+let taskLogsModal;
 
 export default {
+  data() {
+    return {
+      logs: ''
+    }
+  },
   computed: {
-    ...mapState(useGlobalStore, ["tasks"])
+    ...mapState(useGlobalStore, ['tasks'])
   },
   methods: {
-    ...mapActions(useGlobalStore, ["fetchTasks"])
+    ...mapActions(useGlobalStore, ['fetchTasks']),
+    showLogs(logs) {
+      this.logs = logs;
+      taskLogsModal.show();
+    }
   },
   async created() {
     await this.fetchTasks();
   },
-  components: { TaskFormReadOnly }
+  components: { TaskFormReadOnly, Modal },
+  mounted() {
+    taskLogsModal = new bootstrap.Modal('#task-logs');
+  }
 }
 </script>
 
@@ -26,7 +40,7 @@ export default {
   <template v-if="tasks.length">
     <div class="row justify-content-center justify-content-sm-start row-gap-5">
       <div v-for="task in tasks" :key="task._id" class="col-auto">
-        <TaskFormReadOnly :task="task" />
+        <TaskFormReadOnly @show-logs="showLogs" :task="task" />
       </div>
     </div>
   </template>
@@ -44,4 +58,5 @@ export default {
       </div>
     </div>
   </template>
+  <Modal><samp>{{ logs }}</samp></Modal>
 </template>
