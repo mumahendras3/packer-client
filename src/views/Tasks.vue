@@ -15,13 +15,14 @@ export default {
     ...mapState(useGlobalStore, ['tasks', 'repos'])
   },
   methods: {
-    ...mapActions(useGlobalStore, ['fetchTasks']),
+    ...mapActions(useGlobalStore, ['fetchTasks', 'fetchRepos']),
     showLogs(logs) {
       this.logs = logs;
       taskLogsModal.show();
     }
   },
   async created() {
+    await this.fetchRepos();
     await this.fetchTasks();
   },
   components: { TaskFormReadOnly, Modal },

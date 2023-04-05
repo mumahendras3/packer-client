@@ -270,6 +270,24 @@ export const useGlobalStore = defineStore('global', {
         showError(err);
       }
     },
+    async deleteTask(taskId) {
+      try {
+        const axiosOptions = {
+          method: 'DELETE',
+          url: `${serverUrl}/tasks/${taskId}`,
+          headers: {
+            access_token: localStorage.access_token || sessionStorage.access_token
+          }
+        };
+        const { data } = await axios(axiosOptions);
+        showSuccess(data);
+        await this.fetchTasks();
+      } catch (err) {
+        if (err.response)
+          return showError(err.response.data);
+        showError(err);
+      }
+    },
     async googleOauthCallback(response) {
       try {
         const { data: { access_token } } = await axios({
