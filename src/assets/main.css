@@ -1,0 +1,104 @@
+/* Import google font */
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+/* Smooth scrolling for people without disability */
+@media only screen and (prefers-reduced-motion: no-preference) {
+
+  :root,
+  * {
+    scroll-behavior: smooth;
+  }
+}
+
+.web-logo {
+  font-family: Pacifico;
+}
+
+.img-max-size {
+  height: 250px;
+  width: 200px;
+  object-fit: cover;
+}
+
+.divider:after,
+.divider:before {
+  content: "";
+  flex: 1;
+  height: 2px;
+  background: var(--bs-border-color);
+}
+
+/* Taken from bootstrap blog posts example */
+
+/* stylelint-disable selector-list-comma-newline-after */
+.blog-header {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.blog-header-logo {
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif
+    /*rtl:Amiri, Georgia, "Times New Roman", serif*/
+  ;
+  font-size: 2.25rem;
+}
+
+.blog-header-logo:hover {
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif
+    /*rtl:Amiri, Georgia, "Times New Roman", serif*/
+  ;
+}
+
+.display-4 {
+  font-size: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .display-4 {
+    font-size: 3rem;
+  }
+}
+
+.flex-auto {
+  flex: 0 0 auto;
+}
+
+.h-250 {
+  height: 250px;
+}
+
+@media (min-width: 768px) {
+  .h-md-250 {
+    height: 250px;
+  }
+}
+
+/*
+ * Blog posts
+ */
+.blog-post-title {
+  font-size: 2.5rem;
+}
+
+.blog-post-meta {
+  margin-bottom: 1.25rem;
+  color: #727272;
+}
+
+.post-content {
+  white-space: pre-line;
+  text-align: justify;
+}
+
+.btn-card {
+  z-index: 2;
+  position: relative;
+}
