@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
-import { showError, showWarning, showSuccess } from '../helpers/popups';
+import { showError, showSuccess } from '../helpers/popups';
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 export const useGlobalStore = defineStore('global', {
@@ -67,6 +67,11 @@ export const useGlobalStore = defineStore('global', {
       this.router.push('/login');
     },
     updateLoginStatus() {
+      if (localStorage.authorization || sessionStorage.authorization) {
+        this.hasGithubAccessToken = true;
+      } else {
+        this.hasGithubAccessToken = false;
+      }
       if (localStorage.access_token || sessionStorage.access_token)
         return this.isLoggedIn = true;
       this.isLoggedIn = false;
