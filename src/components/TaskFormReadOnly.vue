@@ -1,7 +1,6 @@
 <script>
 import { mapActions } from 'pinia';
 import { useGlobalStore } from '../stores/global';
-let intervalID;
 
 export default {
   props: ['task'],
@@ -31,18 +30,10 @@ export default {
       const logs = await this.getTaskLogs(id);
       this.$emit('show-logs', logs);
     },
-    pollStatus() {
-      intervalID = setInterval(async () => {
-        const data = await this.checkTask(this.id);
-        this.status = data.status;
-      }, 30000);
+    async handleRefreshStatus(id) {
+      const data = await this.checkTask(this.id);
+      this.status = data.status;
     }
-  },
-  mounted() {
-    this.pollStatus();
-  },
-  beforeUnmount() {
-    clearInterval(intervalID);
   }
 }
 </script>
@@ -82,6 +73,9 @@ export default {
     <button v-else-if="status === 'Succeeded'" @click="handleGetTaskLogs(id)" type="button" class="btn btn-success me-2">
       {{ status }}
     </button>
-    <button v-if="status !== 'Running'" @click="deleteTask(id)" type="button" class="btn btn-danger">Delete</button>
+    <button v-if="status !== 'Running'" @click="deleteTask(id)" type="button" class="btn btn-danger me-2">Delete</button>
+    <button @click="handleRefreshStatus" type="button" class="btn btn-secondary">
+      <i class="bi bi-arrow-clockwise"></i>
+    </button>
   </form>
 </template>
