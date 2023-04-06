@@ -67,6 +67,11 @@ export const useGlobalStore = defineStore('global', {
       this.router.push('/login');
     },
     updateLoginStatus() {
+      if (localStorage.authorization || sessionStorage.authorization) {
+        this.hasGithubAccessToken = true;
+      } else {
+        this.hasGithubAccessToken = false;
+      }
       if (localStorage.access_token || sessionStorage.access_token)
         return this.isLoggedIn = true;
       this.isLoggedIn = false;
