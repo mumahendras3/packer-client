@@ -22,10 +22,10 @@ export default {
         ownerName: this.ownerName
       };
       // Save the github access token in local/session storage
-      if (localStorage.access_token)
-        localStorage.authorization = this.githubAccessToken;
-      else if (sessionStorage.access_token)
-        sessionStorage.authorization = this.githubAccessToken;
+      if (localStorage.access_token && this.githubAccessToken)
+        localStorage.authorization = `Bearer ${this.githubAccessToken}`;
+      else if (sessionStorage.access_token && this.githubAccessToken)
+        sessionStorage.authorization = `Bearer ${this.githubAccessToken}`;
       this.addRepo(formData);
     }
   }

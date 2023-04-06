@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
-import { showError, showWarning, showSuccess } from '../helpers/popups';
+import { showError, showSuccess } from '../helpers/popups';
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 export const useGlobalStore = defineStore('global', {
