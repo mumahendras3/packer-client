@@ -38,7 +38,7 @@ export default {
       }, 30000);
     }
   },
-  created() {
+  mounted() {
     this.pollStatus();
   },
   beforeUnmount() {

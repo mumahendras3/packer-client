@@ -61,7 +61,7 @@ export default {
       <button type="submit" class="btn btn-primary">Log In</button>
     </template>
     <button v-else type="submit" class="btn btn-primary">Register</button>
-    <RouterLink to="/">
+    <RouterLink v-if="$route.name === 'register'" to="/login">
       <button type="button" class="btn btn-secondary ms-3">Cancel</button>
     </RouterLink>
   </form>

@@ -1,7 +1,5 @@
 <script>
-import { mapActions } from 'pinia';
 import UserForm from '../components/UserForm.vue';
-import { useGlobalStore } from '../stores/global';
 export default {
   components: {
     UserForm
@@ -24,17 +22,5 @@ export default {
         <UserForm action="login" />
       </div>
     </div>
-    <!-- <div class="row justify-content-center"> -->
-      <!-- <div class="col-10 col-md-8 col-lg-6"> -->
-        <!-- <div class="divider d-flex align-items-center my-4"> -->
-          <!-- <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p> -->
-        <!-- </div> -->
-      <!-- </div> -->
-    <!-- </div> -->
-    <!-- <div class="row justify-content-center"> -->
-      <!-- <div class="col-auto"> -->
-        <!-- <GoogleLogin :callback="googleOauthCallback" /> -->
-      <!-- </div> -->
-    <!-- </div> -->
   </div>
 </template>

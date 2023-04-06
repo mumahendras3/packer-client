@@ -262,7 +262,6 @@ export const useGlobalStore = defineStore('global', {
           }
         };
         const { data } = await axios(axiosOptions);
-        console.log(data);
         return data;
       } catch (err) {
         if (err.response)
@@ -282,25 +281,6 @@ export const useGlobalStore = defineStore('global', {
         const { data } = await axios(axiosOptions);
         showSuccess(data);
         await this.fetchTasks();
-      } catch (err) {
-        if (err.response)
-          return showError(err.response.data);
-        showError(err);
-      }
-    },
-    async googleOauthCallback(response) {
-      try {
-        const { data: { access_token } } = await axios({
-          url: `${serverUrl}/public/login`,
-          method: 'POST',
-          headers: {
-            google_oauth_token: response.credential
-          }
-        });
-        localStorage.access_token = access_token;
-        this.updateLoginStatus();
-        showSuccess({ loggingIn: true });
-        this.router.push('/');
       } catch (err) {
         if (err.response)
           return showError(err.response.data);

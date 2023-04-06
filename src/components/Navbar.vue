@@ -7,7 +7,7 @@ export default {
     ...mapActions(useGlobalStore, ['logout'])
   },
   computed: {
-    ...mapState(useGlobalStore, ['isLoggedIn', 'repos'])
+    ...mapState(useGlobalStore, ['isLoggedIn', 'repos', 'tasks'])
   }
 }
 </script>
@@ -40,6 +40,16 @@ export default {
           <RouterLink to="/add-repo" v-if="$route.name === 'home' && repos.length">
             <button type="button" class="btn btn-success text-nowrap me-2 me-md-0 ms-md-2">
               Add a new repo
+            </button>
+          </RouterLink>
+          <RouterLink to="/add-task" v-if="$route.name === 'tasks' && tasks.length">
+            <button type="button" class="btn btn-success text-nowrap me-2 me-md-0 ms-md-2">
+              Add a new task
+            </button>
+          </RouterLink>
+          <RouterLink to="/register" v-if="$route.name === 'login'">
+            <button type="button" class="btn btn-primary text-nowrap me-2 me-md-0 ms-md-2">
+              Register
             </button>
           </RouterLink>
           <button v-if="isLoggedIn" @click="logout" class="btn btn-primary text-nowrap ms-md-2">
