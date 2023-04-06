@@ -152,8 +152,10 @@ export const useGlobalStore = defineStore('global', {
           axiosOptions.headers.authorization = this.getGithubAccessToken();
         }
         const { data } = await axios(axiosOptions);
-        if (data.message === 'All repos successfully checked for update')
+        if (data.message === 'All repos successfully checked for update') {
+          showSuccess(data);
           await this.fetchRepos();
+        }
       } catch (err) {
         if (err.response)
           return showError(err.response.data);

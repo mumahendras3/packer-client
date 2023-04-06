@@ -32,7 +32,7 @@ export default {
         <p v-else class="card-text mb-3 text-success">
           Local version is up to date
         </p>
-        <button @click="deleteRepo(repo._id)" type="button" class="btn btn-danger me-2">Delete</button>
+        <button @click="deleteRepo(repo._id)" type="button" class="btn btn-danger me-2">Remove</button>
       </div>
     </div>
   </div>
