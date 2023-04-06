@@ -4,10 +4,10 @@ import { useGlobalStore } from '../stores/global';
 
 export default {
   methods: {
-    ...mapActions(useGlobalStore, ['logout'])
+    ...mapActions(useGlobalStore, ['logout', 'checkUpdateAllRepos'])
   },
   computed: {
-    ...mapState(useGlobalStore, ['isLoggedIn', 'repos'])
+    ...mapState(useGlobalStore, ['isLoggedIn', 'repos', 'tasks'])
   }
 }
 </script>
@@ -37,9 +37,22 @@ export default {
           </li>
         </ul>
         <div class="d-md-flex col-md-3 justify-content-md-end mt-2 mt-md-0">
+          <button v-if="$route.name === 'home'" type="button" class="btn btn-secondary" @click="checkUpdateAllRepos">
+            <i class="bi bi-arrow-clockwise"></i>
+          </button>
           <RouterLink to="/add-repo" v-if="$route.name === 'home' && repos.length">
             <button type="button" class="btn btn-success text-nowrap me-2 me-md-0 ms-md-2">
               Add a new repo
+            </button>
+          </RouterLink>
+          <RouterLink to="/add-task" v-if="$route.name === 'tasks' && tasks.length">
+            <button type="button" class="btn btn-success text-nowrap me-2 me-md-0 ms-md-2">
+              Add a new task
+            </button>
+          </RouterLink>
+          <RouterLink to="/register" v-if="$route.name === 'login'">
+            <button type="button" class="btn btn-primary text-nowrap me-2 me-md-0 ms-md-2">
+              Register
             </button>
           </RouterLink>
           <button v-if="isLoggedIn" @click="logout" class="btn btn-primary text-nowrap ms-md-2">

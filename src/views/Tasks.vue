@@ -60,5 +60,7 @@ export default {
       </div>
     </div>
   </template>
-  <Modal><samp>{{ logs }}</samp></Modal>
+  <Modal>
+    <pre>{{ logs }}</pre>
+  </Modal>
 </template>
